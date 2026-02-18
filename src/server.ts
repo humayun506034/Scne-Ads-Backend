@@ -12,7 +12,7 @@ const port = 3000;
 
 async function ensureAdmin() {
   const existingAdmin = await prisma.user.findFirst({
-    where: { email: "admin@scneads.com" },
+    where: { email: "humayun506034@gmail.com" },
   });
 
   if (!existingAdmin) {
@@ -21,9 +21,9 @@ async function ensureAdmin() {
       data: {
         first_name: "Mr.",
         last_name: "Admin",
-        phone: "+8801712345678",
-        email: "admin@scneads.com",
-        image: "https://ui-avatars.com/api/?name=Mr+Admin",
+        phone: "+8801747477746",
+        email: "humayun506034@gmail.com",
+        image: "https://res.cloudinary.com/dbqjujtbq/image/upload/v1771408116/attachments/media/Image-1771408115399.jpg",
         password: hashedPassword,
         organisation_name: "SCNE Ads",
         role: USER_ROLE.admin,
