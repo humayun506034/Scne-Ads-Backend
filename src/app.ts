@@ -15,7 +15,7 @@ app.use(
       "http://localhost:5174",
       "http://localhost:5175",
       "http://localhost:5176",
-      "https://scene-ads.netlify.app",
+      "https://scne-ads.vercel.app",
       "*",
     ],
     credentials: true,
