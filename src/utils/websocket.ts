@@ -50,7 +50,7 @@ export const setupWebSocket = (server: any, jwtSecret: string) => {
       }
     });
 
-    ws.on("message", async (data) => {
+    ws.on("message", async (data: WebSocket.RawData) => {
       try {
         const msg = JSON.parse(data.toString());
 
