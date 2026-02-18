@@ -1,9 +1,9 @@
 node_modules
 
-.env
 
 .vercel
 
 dist
 
 /generated
+config.bat
