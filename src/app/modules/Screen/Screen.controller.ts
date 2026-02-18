@@ -4,7 +4,7 @@ import status from "http-status";
 import { ScreenService } from "./Screen.service";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
-import { uploadImageToSupabase } from "../../middlewares/uploadImageToSupabase";
+import { uploadToCloudinary } from "../../middlewares/uploadToCloudinary";
 import fs from "fs";
 import { nanoid } from "nanoid";
 import { v4 as uuidv4 } from "uuid";
@@ -57,7 +57,7 @@ const getById = catchAsync(async (req: Request, res: Response) => {
 
 //     for (const [index, file] of files.entries()) {
 //       const fileName = `${Date.now()}_${file.originalname}`;
-//       const uploadedUrl = await uploadImageToSupabase(file, fileName);
+//       const uploadedUrl = await uploadToCloudinary(file, fileName);
 
 //       imageUrls.push({
 //         index,
@@ -115,7 +115,7 @@ const create = catchAsync(
 
     for (const file of files) {
       const fileName = `${Date.now()}_${file.originalname}`;
-      const uploadedUrl = await uploadImageToSupabase(file, fileName);
+      const uploadedUrl = await uploadToCloudinary(file, fileName);
 
       imageUrls.push({
         index: uuidv4(), // unique id for each image
@@ -182,7 +182,7 @@ const updateSingleImage = catchAsync(
     }
 
     const fileName = `${Date.now()}_${file.originalname}`;
-    const uploadedUrl = await uploadImageToSupabase(file, fileName);
+    const uploadedUrl = await uploadToCloudinary(file, fileName);
 
     // remove local file
     fs.unlink(file.path, (err) => {
@@ -236,7 +236,7 @@ const addNewImage = catchAsync(
 
     for (const file of files) {
       const fileName = `${Date.now()}_${file.originalname}`;
-      const uploadedUrl = await uploadImageToSupabase(file, fileName);
+      const uploadedUrl = await uploadToCloudinary(file, fileName);
       newImages.push({ index: uuidv4(), url: uploadedUrl });
 
       fs.unlink(file.path, (err) => {

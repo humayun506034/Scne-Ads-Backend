@@ -3,7 +3,7 @@ import { buildDynamicFilters } from "../../../helpers/buildDynamicFilters";
 import { paginationHelper } from "../../../helpers/paginationHelper";
 import prisma from "../../../shared/prisma";
 import AppError from "../../Errors/AppError";
-import { deleteImageFromSupabase } from "../../middlewares/deleteImageFromSupabase";
+import { deleteFromCloudinary } from "../../middlewares/deleteFromCloudinary";
 import status from "http-status";
 import { v4 as uuidv4 } from "uuid";
 import { Prisma } from "@prisma/client";
@@ -117,7 +117,7 @@ const updateSingleImageUrl = async (
   });
 
   if (imageToUpdate.url) {
-    await deleteImageFromSupabase(imageToUpdate.url);
+    await deleteFromCloudinary(imageToUpdate.url);
   }
 
   return result;
@@ -142,7 +142,7 @@ const deleteSingleImageUrl = async (screenId: string, imageId: string) => {
     throw new AppError(status.NOT_FOUND, "Image not found with given ID");
   }
 
-  await deleteImageFromSupabase(deletedImage.url);
+  await deleteFromCloudinary(deletedImage.url);
 
   const updatedImages = imageUrls.filter((img) => img.index !== imageId);
 

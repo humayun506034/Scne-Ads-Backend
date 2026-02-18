@@ -4,7 +4,7 @@ import fs from "fs";
 import status from "http-status";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
-import { uploadImageToSupabase } from "../../middlewares/uploadImageToSupabase";
+import { uploadToCloudinary } from "../../middlewares/uploadToCloudinary";
 import { BundleService } from "./Bundle.service";
 import { nanoid } from "nanoid";
 
@@ -70,7 +70,7 @@ const create = catchAsync(
 
     try {
       const ImageName = `Image-${Date.now()}-${nanoid(6)}`;
-      const imageLink = await uploadImageToSupabase(req.file, ImageName);
+      const imageLink = await uploadToCloudinary(req.file, ImageName);
       payload.img_url = imageLink;
       fs.unlink(req.file.path, (err) => {
         if (err) {
@@ -126,7 +126,7 @@ const update = catchAsync(
     if (req.file) {
       try {
         const ImageName = `Image-${Date.now()}-${nanoid(6)}`;
-        const imageLink = await uploadImageToSupabase(req.file, ImageName);
+        const imageLink = await uploadToCloudinary(req.file, ImageName);
         payload.img_url = imageLink;
       fs.unlink(req.file.path, (err) => {
           if (err) {

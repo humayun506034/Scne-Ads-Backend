@@ -3,7 +3,7 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import status from "http-status";
 import { UserService } from "./auth.service";
-import { uploadImageToSupabase } from "../../middlewares/uploadImageToSupabase";
+import { uploadToCloudinary } from "../../middlewares/uploadToCloudinary";
 import fs from "fs";
 import AppError from "../../Errors/AppError";
 const createUser: RequestHandler = catchAsync(async (req, res) => {
@@ -14,7 +14,7 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 
   if (file) {
     const ImageName = `Image-${Date.now()}`;
-    const imageLink = await uploadImageToSupabase(req.file as any, ImageName);
+    const imageLink = await uploadToCloudinary(req.file as any, ImageName);
     parseData.image = imageLink;
     fs.unlink((req.file as any).path, (err) => {
       if (err) {

@@ -4,7 +4,7 @@ import fs from "fs";
 import status from "http-status";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
-import { uploadImageToSupabase } from "../../middlewares/uploadImageToSupabase";
+import { uploadToCloudinary } from "../../middlewares/uploadToCloudinary";
 import { BannerService } from "./banner.service";
 
 const getAll = catchAsync(async (req: Request, res: Response) => {
@@ -37,10 +37,10 @@ const create = catchAsync(
 
     if (req?.file) {
       try {
-        // Call the uploadImageToSupabase only if the file exists
+        // Call the cloud upload only if the file exists
 
         const ImageName = `Image-${Date.now()}`;
-        const imageLink = await uploadImageToSupabase(req.file, ImageName);
+        const imageLink = await uploadToCloudinary(req.file, ImageName);
 
         // console.log("Image Link .....",imageLink);
         img_url = imageLink;

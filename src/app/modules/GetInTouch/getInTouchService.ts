@@ -1,13 +1,4 @@
-// getInTouchService.ts
-import nodemailer from "nodemailer";
-
-const transporter = nodemailer.createTransport({
-  service: "gmail", // Or use "host" and "port" for custom SMTP
-  auth: {
-    user: `${process.env.SMTP_USER}`,
-    pass: `${process.env.SMTP_PASS}`, // Use an app password or real password (if less secure apps are allowed)
-  },
-});
+import { sendVerificationEmail } from "../../../utils/sendVerificationEmail";
 
 const sendGetInTouchMessage = async (payload: {
   firstName: string;
@@ -16,13 +7,17 @@ const sendGetInTouchMessage = async (payload: {
   phone: string;
   message: string;
 }) => {
-  console.log("get in touch...", payload);
+  const supportEmail = process.env.BREVO_SENDER_EMAIL;
 
-  const mailOptions = {
-    from: `"${payload.firstName} ${payload.lastName}" <${payload.email}>`,
-    to: `${process.env.SMTP_USER}`,
-    subject: "📩 New Get In Touch Message Received",
-    text: `You have received a new message from ${payload.firstName} ${payload.lastName}.`, // Fallback for non-HTML clients
+  if (!supportEmail) {
+    throw new Error(
+      "BREVO_SENDER_EMAIL is required for contact messages."
+    );
+  }
+
+  await sendVerificationEmail({
+    to: supportEmail,
+    subject: "New Get In Touch Message Received",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #e0e0e0; padding: 20px;">
         <h2 style="color: #333;">New Contact Message</h2>
@@ -49,22 +44,10 @@ const sendGetInTouchMessage = async (payload: {
             <p style="white-space: pre-wrap; margin: 0;">${payload.message}</p>
           </div>
         </div>
-
-        <p style="margin-top: 30px; font-size: 0.9em; color: #888;">
-          This email was generated automatically by your website's contact form.
-        </p>
       </div>
     `,
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent: ", info.response);
-  } catch (error) {
-    console.error("Error sending email: ", error);
-  }
+  });
 };
-
 
 export const getInTouchService = {
   sendGetInTouchMessage,

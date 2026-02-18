@@ -4,8 +4,8 @@ import status from "http-status";
 import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import AppError from "../../Errors/AppError";
-import { deleteImageFromSupabase } from "../../middlewares/deleteImageFromSupabase";
-import { uploadImageToSupabase } from "../../middlewares/uploadImageToSupabase";
+import { deleteFromCloudinary } from "../../middlewares/deleteFromCloudinary";
+import { uploadToCloudinary } from "../../middlewares/uploadToCloudinary";
 import { UserDataServices } from "./user.service";
 
 const getAllUsers = catchAsync(async (req, res) => {
@@ -64,12 +64,12 @@ const updateProfile = catchAsync(async (req: Request & { user?: any }, res) => {
       if (findUser?.image) {
         //
 
-        await deleteImageFromSupabase(findUser.image);
+        await deleteFromCloudinary(findUser.image);
       }
     }
 
     const ImageName = `Image-${Date.now()}`;
-    const imageLink = await uploadImageToSupabase(req.file as any, ImageName);
+    const imageLink = await uploadToCloudinary(req.file as any, ImageName);
     parseData.image = imageLink;
     fs.unlink((req.file as any).path, (err) => {
       if (err) {

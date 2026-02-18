@@ -7,7 +7,7 @@ import sendResponse from "../../../shared/sendResponse";
 import prisma from "../../../shared/prisma";
 import Stripe from "stripe";
 import AppError from "../../Errors/AppError";
-import { uploadImageToSupabase } from "../../middlewares/uploadImageToSupabase";
+import { uploadToCloudinary } from "../../middlewares/uploadToCloudinary";
 import fs from "fs";
 import { CAMPAIGN_STATUS } from "@prisma/client";
 const stripe = new Stripe(process.env.STRIPE_SECRET as string, {
@@ -109,7 +109,7 @@ const create = catchAsync(
 
       for (const file of files) {
         const fileName = `${Date.now()}_${file.originalname}`;
-        const uploadedUrl = await uploadImageToSupabase(file, fileName); // Upload file
+        const uploadedUrl = await uploadToCloudinary(file, fileName); // Upload file
         contentUrls.push(uploadedUrl); // Store URL
 
         // Remove local file
@@ -181,7 +181,7 @@ const createCustomPayment = catchAsync(
 
       for (const file of files) {
         const fileName = `${Date.now()}_${file.originalname}`;
-        const uploadedUrl = await uploadImageToSupabase(file, fileName); // Upload file
+        const uploadedUrl = await uploadToCloudinary(file, fileName); // Upload file
         contentUrls.push(uploadedUrl); // Store URL
 
         // Remove local file
