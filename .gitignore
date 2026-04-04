@@ -6,4 +6,4 @@ node_modules
 dist
 
 /generated
-config.bat
+.env
